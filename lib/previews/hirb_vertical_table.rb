@@ -1,3 +1,5 @@
+require 'hirb-unicode'
+
 class Hirb::Helpers::VerticalTable < Hirb::Helpers::Table
   # Method should return an Array
   def render_rows
