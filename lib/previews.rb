@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+require 'json'
+require 'net/http'
 require 'previews/version'
 require 'previews/array'
 require 'previews/hirb_vertical_table'
