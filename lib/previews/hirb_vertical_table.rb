@@ -1,4 +1,4 @@
-require 'hirb-unicode'
+require 'hirb'
 
 class Hirb::Helpers::VerticalTable < Hirb::Helpers::Table
   # Method should return an Array
