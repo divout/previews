@@ -1,4 +1,9 @@
 class Array
+  # Using Hirb to print reviews.
+  # :fields is fields to display
+  # print out :vertical table
+  # HEADERS is Hash of headers
+  # passing system_less as a option
   def print_with(fields, system_less)
     extend Hirb::Console
     table self, :fields      => fields,
