@@ -15,24 +15,8 @@ module Previews
     def reviews
       self.download_reviews
       @reviews.flatten!
-      self.replace_rating_with("★", "☆")
-      self.parse_date_time
 
       @reviews
-    end
-
-    def parse_date_time
-      @reviews.each do |review|
-        review['date_created'] = DateTime.parse(review['date_created']) # .strftime("%e %b %Y %H:%m:%S%p")
-      end
-    end
-
-    # Replace each review's rating into some symbols
-    # Like replace_rating_with("★", "☆")
-    def replace_rating_with(up, empty)
-      @reviews.each do |review|
-        review['rating'] = up * review['rating'] + empty * (5 - review['rating'])
-      end
     end
 
     # Get all reviews
