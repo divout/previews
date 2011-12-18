@@ -1,19 +1,12 @@
-= previews - DESCRIBE YOUR GEM
+# previews
+Read user reviews of linux packages.
 
-Author::  YOUR NAME (YOUR EMAIL)
-Copyright:: Copyright (c) 2011 YOUR NAME
-License:: 
+**Author:**  Ivan K.
 
-DESCRIBE YOUR GEM HERE
+[Source on Github](https://github.com/divout/previews)
 
-== Links
-
-* {Source on Github}[LINK TO GITHUB]
-* RDoc[LINK TO RDOC.INFO]
-
-== Install
-
-== Examples
-
-== Contributing
-
+## Installation:
+    gem install previews
+## Usage:
+    previews vlc --sort-rating asc --lang es
+Type `previews --help` for full list of options.
