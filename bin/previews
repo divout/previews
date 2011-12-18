@@ -1,35 +1,84 @@
-#!/usr/bin/env ruby -w
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+$LOAD_PATH << File.join(File.dirname(__FILE__), *%w[.. lib])
 
 require 'optparse'
 require 'methadone'
+require 'previews'
 
-include Methadone::Main
+HEADERS = { 'origin'               => 'Origin',
+            'rating'               => 'Rating',
+            'app_name'             => 'Application Name',
+            'language'             => 'Language',
+            'reviewer_username'    => 'Username',
+            'reviewer_displayname' => 'From',
+            'summary'              => 'Summary',
+            'review_text'          => 'Review',
+            'version'              => 'Version',
+            'date_created'         => 'Date',
+            'package_name'         => 'Package Name',
+            'distroseries'         => 'distroseries' }
 
-main do # Add args you want: |like,so|
-  # your program code here
-  # You can access CLI options via
-  # the options Hash
-end
+options = {
+  :fields          => ['rating', 'reviewer_displayname', 'summary', 'review_text'],
+  :release         => 'oneiric',
+  :locale          => 'en',
+  :package         => ARGV[0],
+  :system_less     => true,
+  :sort_field      => nil,
+  :sort_direction  => nil
+}
 
-# supplemental methods here
+OptionParser.new do |opts|
+  opts.banner = 'Usage: previews PACKAGE [options]'
 
-# Declare command-line interface here
+  opts.separator ""
+  opts.separator "Options:"
 
-# description "one line description of your app"
-#
-# Accept flags via:
-# on("--flag VAL","Some flag")
-# options[flag] will contain VAL
-#
-# Specify switches via:
-# on("--[no-]switch","Some switch")
-#
-# Or, just call OptionParser methods on opts
-#
-# Require an argument
-# arg :some_arg 
-#
-# # Make an argument optional
-# arg :optional_arg, :optional
+  sort_options = ['asc', 'desc', 'ASC', 'DESC']
+  opts.on('-d', '--sort-date DIRECTION', sort_options, 'Sort reviews by date. DIRECTION could be DESC or ASC') do |direction|
+    options[:sort_field]      = 'date_created'
+    options[:sort_direction]  = direction.downcase
+  end
 
-go!
+  opts.on('-t', '--sort-rating DIRECTION', sort_options, 'Sort reviews by rating. DIRECTION could be DESC or ASC') do |direction|
+    options[:sort_field]      = 'rating'
+    options[:sort_direction]  = direction.downcase
+  end
+
+  opts.on('-u', '--sort-usefulness DIRECTION', sort_options, 'Sort reviews by usefulness. DIRECTION could be DESC or ASC', 'Default is DESC') do |direction|
+    options[:sort_field]      = 'usefulness'
+    options[:sort_direction]  = direction.downcase
+  end
+
+  opts.on('-s', '--[no-]less', 'Set `less` for displaying reviews. By default it is true') do |less|
+    options[:system_less] = less
+  end
+  opts.on('-l', '--lang LANGUAGE', "Set language of reviews. Default is #{options[:locale]}") do |locale|
+    options[:locale] = locale
+  end
+
+  opts.on('-r', '--release RELEASE', "Set the release for package. Default is #{options[:release]}" ) do |release|
+    options[:release] = release
+  end
+
+  opts.on('-f', '--fields A,B,C', Array, 'Set the fields you want to display.', "Available fields: #{HEADERS.keys.join(', ')}") do |fields|
+    options[:fields] = fields.map(&:strip)
+  end
+
+  opts.on( '-h', '--help', 'Show this message' ) do
+    puts opts
+    exit
+  end
+
+  if ARGV.empty?
+    puts opts
+    exit
+  end
+end.parse!
+
+reviews = Previews::PackageReviews.new(options[:locale], options[:release], options[:package]).reviews
+reviews.parse_date_time
+reviews.sort_with!(options[:sort_field], options[:sort_direction]) if options[:sort_field]
+reviews.replace_rating_with("★", "☆")
+reviews.print_with(options[:fields], options[:system_less])
