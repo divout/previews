@@ -15,8 +15,8 @@ class Array
   # By default reviews sorted by usefulness. We can reverse it to sort by ascending
   # For others fields we sorting by comparing each element of Array
   def sort_with!(field, direction)
-    self          if 'usefulness' == field && 'desc' == direction
-    self.reverse! if 'usefulness' == field && 'asc'  == direction
+    return self          if 'usefulness' == field && 'desc' == direction
+    return self.reverse! if 'usefulness' == field && 'asc'  == direction
     if 'asc' == direction
       self.sort! { |review1, review2| review1[field] <=> review2[field]}
     elsif 'desc' == direction
