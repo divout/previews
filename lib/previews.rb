@@ -14,12 +14,13 @@ module Previews
 
     # Return Array of Hases
     def reviews
-      self.download_reviews
+      download_reviews
       @reviews.flatten!
 
       @reviews
     end
 
+    private
     # Get all reviews
     # Return Array of Hashes
     def download_reviews
