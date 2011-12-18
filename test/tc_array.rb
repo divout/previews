@@ -1,5 +1,4 @@
 require 'tc_helper'
-require 'json'
 
 class TestArray < Test::Unit::TestCase
   def setup
