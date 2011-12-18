@@ -12,6 +12,7 @@ module Previews
       @reviews = []
     end
 
+    # Return Array of Hases
     def reviews
       self.download_reviews
       @reviews.flatten!
