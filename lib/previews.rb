@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+require 'rubygems'
 require 'json'
 require 'net/http'
 require 'previews/version'
