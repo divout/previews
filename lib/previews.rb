@@ -17,19 +17,15 @@ module Previews
     def reviews
       download_reviews
       @reviews.flatten!
-
-      @reviews
     end
 
     private
     # Get all reviews
     # Return Array of Hashes
     def download_reviews
-      page = 1
-      loop do
+      (1..1/0.0).map do |page|
         @reviews << download_page(page)
         break if @reviews.last.empty?
-        page += 1
       end
     end
 
