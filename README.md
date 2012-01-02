@@ -25,4 +25,3 @@ Options:
 ```
 ## Example:
     previews vlc --sort-rating asc --lang es
-Type `previews --help` for full list of options.
