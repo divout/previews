@@ -18,9 +18,8 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*")
 end
 
-# compile 'README.md.erb' file into 'README.md' file
+desc "Compile README.md.erb into README.md"
 task :readme do
-  puts "Compiling README.md"
   @usage = `ruby bin/previews --help`.gsub(/^Usage: /, "Usage:\n```\n") + "```"
   File.open("README.md", "w") do |f|
     f.write ERB.new(File.new("README.md.erb", "r").read).result(binding)
